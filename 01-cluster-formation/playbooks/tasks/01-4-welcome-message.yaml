@@ -1,0 +1,18 @@
+- hosts: all
+  tasks:
+    - name: Rebuild /etc/update-motd.d/01-custom
+      copy:
+        dest: "/etc/update-motd.d/01-custom"
+        content: |
+          #!/bin/sh
+          echo "GENERAL SYSTEM INFORMATION"
+          /usr/bin/screenfetch
+          echo
+          echo "SYSTEM DISK USAGE"
+          export TERM=xterm; inxi -D
+          echo
+
+    - name: Change /etc/update-motd.d/01-custom permissions
+      ansible.builtin.file:
+        path: /etc/update-motd.d/01-custom
+        mode: u+rwx,g-wx,o-rwx

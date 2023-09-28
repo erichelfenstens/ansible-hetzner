@@ -1,0 +1,12 @@
+{{ ansible_managed|comment }}
+
+# https://docs.hetzner.com/robot/dedicated-server/network/vswitch/
+
+
+auto {{ interface_vswitch_name }}
+
+iface {{ interface_vswitch_name }} inet static
+  address {{ hostvars[inventory_hostname].IPv4 }}
+  netmask 255.255.255.0
+  vlan-raw-device {{ interface_name }}
+  mtu 1400

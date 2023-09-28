@@ -1,0 +1,39 @@
+- hosts: all
+  tasks:
+    - name: Set Hostname
+      ansible.builtin.hostname:
+        name: "{{ hostvars[inventory_hostname].hostname }}"
+
+    - name: Rebuild /etc/hosts
+      copy:
+        dest: "/etc/hosts"
+        content: |
+          #################################################
+          # IPv4
+          127.0.0.1 localhost.localdomain localhost
+          #{{ hostvars[inventory_hostname].IPv4 }} {{ hostvars[inventory_hostname].hostname }}
+
+          # IPv6
+          ::1     ip6-localhost ip6-loopback
+          fe00::0 ip6-localnet
+          ff00::0 ip6-mcastprefix
+          ff02::1 ip6-allnodes
+          ff02::2 ip6-allrouters
+          ff02::3 ip6-allhosts
+          #{{ hostvars[inventory_hostname].IPv6 }} {{ hostvars[inventory_hostname].hostname }}
+
+          #gago.io oragon.io servers
+
+    - name: Update the /etc/hosts file with node names
+      #tags: etchostsupdate
+      become: true
+      become_user: root
+      lineinfile:
+        dest: "/etc/hosts"
+        regexp: ".*\t{{ hostvars[item].hostname}}\t{{ hostvars[item].hostname}}"
+        line: "{{ hostvars[item].IPv4 }}\t{{ hostvars[item].hostname}}\t{{ hostvars[item].hostname}}"
+        state: present
+        backup: yes
+      register: etchostsupdate
+      when: ansible_hostname != "{{ item }}" or ansible_hostname == "{{ item }}"
+      with_items: "{{groups['all']}}"

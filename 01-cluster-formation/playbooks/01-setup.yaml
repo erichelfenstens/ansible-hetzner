@@ -1,0 +1,23 @@
+- name: Check SSH port
+  import_playbook: ./tasks/00-ssh-port.yaml
+
+- name: APT
+  import_playbook: ./tasks/01-1-apt.yaml
+
+- name: Hostname and Hosts
+  import_playbook: ./tasks/01-2-hostname-hosts.yaml
+
+- name: Hetzner vSwitch
+  import_playbook: ./tasks/01-3-vswitch.yaml
+
+- name: Welcome Message
+  import_playbook: ./tasks/01-4-welcome-message.yaml
+
+- name: Reboot if required
+  import_playbook: ./tasks/01-5-reboot.yaml
+
+- name: Change SSH Port
+  import_playbook: ./tasks/01-6-change-sshd-port.yaml
+
+- name: Add Docker
+  import_playbook: ./tasks/03-docker.yaml

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+{{ ansible_managed | comment }}
+
+ip link add link {{ interface_name }} name {{ interface_vswitch_name }} type vlan id 4000
+
+ip link set {{ interface_vswitch_name }} mtu 1400
+
+ip link set dev {{ interface_vswitch_name }} up
+
+ip addr add {{ hostvars[inventory_hostname].IPv4 }}/24 brd 192.168.100.255 dev {{ interface_vswitch_name }}
+
+ifup {{ interface_vswitch_name }}

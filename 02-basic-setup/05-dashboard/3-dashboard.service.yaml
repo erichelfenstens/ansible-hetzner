@@ -1,0 +1,23 @@
+#=============================================================================
+# Copyright Luiz Carlos Faria 2022. All Rights Reserved.
+# This file is licensed under the MIT License.
+# License text available at https://opensource.org/licenses/MIT
+#=============================================================================
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: gago-dashboard-service
+  namespace: kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+spec:
+  ports:
+    - protocol: TCP
+      port: 8443
+      targetPort: 8443
+      nodePort: 30777
+  selector:
+    k8s-app: kubernetes-dashboard
+  type: NodePort

@@ -1,0 +1,25 @@
+- hosts: all
+  vars:
+    hosts_file: "{{ lookup('file','../../hosts.yml') | from_yaml }}"
+  tasks:
+    - name: Change SSH port
+      lineinfile:
+        dest: "/etc/ssh/sshd_config"
+        regexp: "^Port"
+        line: "Port {{ hosts_file.all.hosts[inventory_hostname]['ansible_port'] }}"
+      notify: "Restart sshd"
+
+    - name: "Read /etc/ssh/sshd_config"
+      shell: |
+        cat /etc/ssh/sshd_config | grep "^Port"
+      register: sshd_config_file_content
+
+    - name: Check /etc/ssh/sshd_config port
+      debug:
+        msg: "{{ hosts_file.all.hosts[inventory_hostname]['hostname'] }} will use {{ sshd_config_file_content.stdout }} to connect with ssh"
+
+  handlers:
+    - name: Restart sshd
+      service:
+        name: sshd
+        state: restarted

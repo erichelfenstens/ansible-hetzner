@@ -1,0 +1,5 @@
+- name: Check SSH port
+  import_playbook: ./tasks/00-ssh-port.yaml
+
+- name: Racqspace MicroK8s
+  import_playbook: ./tasks/04-racqspace-microk8s.yaml

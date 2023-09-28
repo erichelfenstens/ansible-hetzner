@@ -1,0 +1,36 @@
+- hosts: microk8s
+  roles:
+    - role: "../../roles/ansible-role-microk8s-main"
+      vars:
+        microk8s_plugins:
+          ingress: true
+          dns: true
+          prometheus: true
+          metrics-server: true
+        microk8s_enable_ha: true
+        microk8s_group_ha: "microk8s"
+        microk8s_ip_regex_ha: "192.168.100."
+        microk8s_snap_channel: "1.25/stable"
+
+  tasks:
+    - name: Add root user to docker group
+      user:
+        name: root
+        groups: microk8s
+        append: yes
+
+    - name: Add alias to kubectl
+      become: false
+      lineinfile:
+        path: "~/.bashrc"
+        regexp: "^alias kubectl="
+        line: 'alias kubectl="microk8s kubectl"'
+        state: present
+
+    - name: Add bash completion for kubectl
+      become: false
+      lineinfile:
+        path: "~/.bashrc"
+        regexp: '^source \<\(kubectl'
+        line: "source <(kubectl completion bash)"
+        state: present

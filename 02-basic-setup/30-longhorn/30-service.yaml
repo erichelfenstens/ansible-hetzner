@@ -1,0 +1,30 @@
+#=============================================================================
+# Copyright Luiz Carlos Faria 2022. All Rights Reserved.
+# This file is licensed under the MIT License.
+# License text available at https://opensource.org/licenses/MIT
+#=============================================================================
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: gago-longhorn-frontend
+  namespace: longhorn-system
+  labels:
+    app: longhorn-ui
+    app.kubernetes.io/instance: longhorn
+    app.kubernetes.io/name: longhorn
+    app.kubernetes.io/version: v1.3.1
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+      nodePort: 30778
+  selector:
+    app: longhorn-ui
+  type: NodePort
+
+status:
+  loadBalancer: {}

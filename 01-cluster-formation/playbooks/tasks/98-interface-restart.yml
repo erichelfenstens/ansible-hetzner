@@ -1,0 +1,19 @@
+# - name: Stop network interface
+#   changed_when: no
+#   command: "ifdown {{ interface_vswitch_name }}"
+#   when: interface_name in ip_link_list_result.stdout
+#   ignore_errors: true
+
+# - name: Start network interface
+#   changed_when: no
+#   command: "ifup {{ interface_vswitch_name }}"
+#   ignore_errors: true
+
+- name: Reboot
+  reboot:
+    msg: "Reboot initiated"
+    connect_timeout: 5
+    reboot_timeout: 300
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime

@@ -1,0 +1,36 @@
+- hosts: all
+  tasks:
+    - name: "apt-get update"
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+        force_apt_get: true
+
+    - name: "apt-get upgrade"
+      apt:
+        upgrade: dist
+        force_apt_get: true
+
+    - name: apt-get install
+      ansible.builtin.apt:
+        pkg:
+          - git
+          - zip
+          - unzip
+          - mc
+          - htop
+          - curl
+          - gpg
+          - wget
+          - inxi
+          - screenfetch
+          - apt-transport-https
+          - ca-certificates
+          - gnupg-agent
+          - software-properties-common
+          - gnupg
+          - lsb-release
+          - iproute2
+          - ifupdown
+          - jq
+          - nfs-common

@@ -1,0 +1,50 @@
+- hosts: vswitch
+
+  tasks:
+    - name: Check interface status
+      command: ip link list
+      changed_when: no
+      register: ip_link_list_result
+
+    - name: Get default interface name
+      set_fact:
+        interface_name: "{{ ansible_default_ipv4.interface }}"
+        interface_vswitch_name: "{{ ansible_default_ipv4.interface }}.4000"
+        interface_vswitch_filename: "{{ ansible_default_ipv4.interface }}-4000"
+
+    - name: Ensure /etc/network/interfaces.d is present
+      file:
+        path: /etc/network/interfaces.d
+        state: directory
+        mode: 0755
+
+    - name: "Configure virtual interface {{ interface_name }}"
+      template:
+        src: ../templates/interface.j2
+        dest: "/etc/network/interfaces.d/{{ interface_vswitch_name }}"
+        mode: 0755
+
+    - name: Ensure /etc/network/if-up.d is present
+      file:
+        path: /etc/network/if-up.d
+        state: directory
+
+    - name: Configure if-up script
+      template:
+        src: ../templates/if-up.j2
+        dest: "/etc/network/if-up.d/{{ interface_vswitch_filename }}"
+        mode: 0755
+
+    - name: Check interface status
+      command: ip link list
+      changed_when: no
+      register: ip_link_list_result
+
+    - name: Need Reboot?
+      register: reboot_required_file
+      stat: path=/var/run/reboot-required get_md5=no
+
+    - name: Set to reboot
+      command: touch /var/run/reboot-required
+      changed_when: no
+      when: reboot_required_file.stat.exists == False
