@@ -10,7 +10,7 @@
         microk8s_enable_ha: true
         microk8s_group_ha: "microk8s"
         microk8s_ip_regex_ha: "192.168.100."
-        microk8s_snap_channel: "1.25/stable"
+        microk8s_snap_channel: "1.24/stable"
 
   tasks:
     - name: Add root user to docker group
