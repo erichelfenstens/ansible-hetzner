@@ -7,8 +7,8 @@
 - name: Hostname and Hosts
   import_playbook: ./tasks/01-2-hostname-hosts.yaml
 
-- name: Hetzner vSwitch
-  import_playbook: ./tasks/01-3-vswitch.yaml
+#- name: Hetzner vSwitch
+#  import_playbook: ./tasks/01-3-vswitch.yaml
 
 - name: Welcome Message
   import_playbook: ./tasks/01-4-welcome-message.yaml
