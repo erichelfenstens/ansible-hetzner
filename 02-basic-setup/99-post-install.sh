@@ -10,14 +10,14 @@ echo "Gerando informações úteis"
 echo "---------------------------------------------------"
 echo
 echo "Dashboard"
-echo "https://95.216.203.205:30777/"
+echo "https://135.181.42.70:30777/"
 echo
 kubectl -n kubernetes-dashboard create token admin-user
 echo
 echo "---------------------------------------------------"
 echo
 echo "Rancher Longhorn"
-echo "http://95.216.203.205:30778/"
+echo "http://135.181.42.70:30778/"
 echo
 echo "---------------------------------------------------"
 #kubectl proxy
