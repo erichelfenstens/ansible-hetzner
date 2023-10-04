@@ -9,7 +9,7 @@ exclude_paths:
   - .pre-commit-hooks.yaml
 
 # parseable: true
-# verbosity: 1
+verbosity: 1
 quiet: true
 
 # Mock modules or roles in order to pass ansible-playbook --syntax-check
